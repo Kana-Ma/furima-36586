@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, only: :new
-  before_action :check_soldout, only: :new
-  before_action :check_self_item, only: :new
+  before_action :authenticate_user!, only: [:new, :create]
+  before_action :check_soldout, only: [:new, :create]
+  before_action :check_self_item, only: [:new, :create]
   before_action :set_item, only: [:new, :create]
 
   def new
