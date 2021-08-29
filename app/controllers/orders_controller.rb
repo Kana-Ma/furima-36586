@@ -2,14 +2,13 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!, only: :new
   before_action :check_soldout, only: :new
   before_action :check_self_item, only: :new
+  before_action :set_item, only: [:new, :create]
 
   def new
-    @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new(order_params)
     if @order_address.valid?
       pay_item
@@ -45,5 +44,9 @@ class OrdersController < ApplicationController
     if Item.find_by(id: params[:item_id]).user_id == current_user.id
       redirect_to root_path
     end
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
   end
 end
