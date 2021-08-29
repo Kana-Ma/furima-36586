@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :destroy]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
-  before_action :check_self_item, only: [:edit, :update, :destroy]
+  before_action :check_soldout, only: [:edit, :update, :destroy]
 
   def index
     @items = Item.order('created_at DESC')
@@ -56,8 +56,8 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
-  def check_self_item
-    if Item.find_by(id: params[:id]).user_id == current_user.id
+  def check_soldout
+    if Order.exists?(item_id: params[:id])
       redirect_to root_path
     end
   end
